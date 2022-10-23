@@ -1,0 +1,25 @@
+{
+  "name": "love-all-play-backend",
+  "version": "1.0.0",
+  "description": "Backend for Love-all-play",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daily-dev-jake/Love-all-play-backend.git"
+  },
+  "author": "",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/daily-dev-jake/Love-all-play-backend/issues"
+  },
+  "homepage": "https://github.com/daily-dev-jake/Love-all-play-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.6.5"
+  }
+}
