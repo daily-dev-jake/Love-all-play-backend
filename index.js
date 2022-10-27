@@ -1,7 +1,17 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const mongoose = require("mongoose")
-require('dotenv').config();
-mongoose.connect(process.env.MDB_URL, {useNewUrlParser:true})
+const port = process.env.PORT || 5000;
+require("dotenv").config();
+const mongoose = require("mongoose");
+mongoose.connect(process.env.MDB_URL, { useNewUrlParser: true });
 
-app.listen(3001, () => console.log("Connected to port 3001"))
+const matchRouter = require("./routes/matchRouter");
+const playerRouter = require("./routes/playerRouter");
+app.use("/match", matchRouter);
+app.use("/player", playerRouter);
+
+const conn = mongoose.connection;
+conn.once("open", () => {
+  console.log("MongoDB connection established successfully");
+  app.listen(port, () => console.log("Connected to port " + port));
+});
