@@ -1,13 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const matchSchema = new Schema({
-    
-    score: {
-        type: Number,
-        require: true,
-    },
-    player1: { type: Schema.Types.ObjectId, ref:'player' },
-    player2: { type: Schema.Types.ObjectId, ref:'player' },
+const MatchSchema = new Schema({
+    players: [{ type: String, required: true }],
+    score: [{ type: Number, required: true }],
+    date: { type: Date, required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 })
-module.exports = mongoose.model('Match',matchSchema);
+module.exports = mongoose.model('Match',MatchSchema);
 // const matchModel = mongoose.model('match',matchSchema);

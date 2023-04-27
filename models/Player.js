@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Match = require("../models/Match");
 const Schema = mongoose.Schema
-const playerSchema = new Schema({
+const PlayerSchema = new Schema({
   name: {
     type: String,
     trim: true,
@@ -18,8 +18,7 @@ const playerSchema = new Schema({
     required: true,
     unique: true,
   },
-//   matches :[{ type: mongoose.Types.ObjectId, ref: "Match"}]
 });
 
-module.exports = mongoose.model("Player", playerSchema);
+module.exports = mongoose.model("Player", PlayerSchema);
 //const playerModel = mongoose.model('Player',playerSchema);
