@@ -8,10 +8,9 @@ const PlayerSchema = new Schema({
     required: true,
     minlength: 3
   },
-  password: {
+  avatar: {
     type: String,
-    required: true,
-    minlength: 6,
+    default: "",
   },
   email: {
     type: String,
