@@ -20,4 +20,3 @@ const PlayerSchema = new Schema({
 });
 
 module.exports = mongoose.model("Player", PlayerSchema);
-//const playerModel = mongoose.model('Player',playerSchema);
