@@ -1,4 +1,3 @@
-const Player = require("../models/player");
 const playerService = require("../services/playerService");
 // const bcrypt = require("bcrypt");
 // const googleClient = new OAuth2Client({

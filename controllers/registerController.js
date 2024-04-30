@@ -1,4 +1,4 @@
-const Player = require('../models/player');
+const Player = require('../models/Player');
 const bcrypt = require('bcrypt');
 
 const handleNewPlayer = async (req, res) => {

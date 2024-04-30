@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const Match = require("../models/Match");
 const Schema = mongoose.Schema
 const PlayerSchema = new Schema({
   name: {
     type: String,
     trim: true,
+    default: "",
     required: true,
     minlength: 3
   },
@@ -14,6 +14,7 @@ const PlayerSchema = new Schema({
   },
   email: {
     type: String,
+    default: "",
     required: true,
     unique: true,
   },

@@ -1,4 +1,4 @@
-const Player = require("../models/player");
+const Player = require("../models/playerModel");
 
 exports.createUser = async (request, response) => {
   try {
@@ -11,13 +11,15 @@ exports.createUser = async (request, response) => {
     });
     console.log(result);
     response.status(201).json({ success: `New player ${name} created!` });
+    return { player: result };
   } catch (err) {
-    if (err.includes("E11000")) {
+    if (err.toString().includes("E11000")) {
       response.status(500).json({ message: "Player has been created before. Please login instead." });
     }
     else {
       response.status(500).json({ message: "From MONGODB: " + err.message });
     }
+    return { player: undefined };
   }
 };
 
