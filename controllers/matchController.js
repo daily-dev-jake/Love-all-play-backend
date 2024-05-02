@@ -6,7 +6,6 @@ const matchController = {
   async createMatch(req, res) {
     try {
       const matchPlayers = req.body;
-      // if dont't have
       const players = [];
       const playersScores = [];
       // no. of players guard
@@ -23,6 +22,7 @@ const matchController = {
           foundUser = await playerService.findUserByEmail(player.email);
           console.log("finding user now:");
           console.log(foundUser);
+          // if dont't have
           if (!foundUser) {
             try {
               foundUser = await Player.create({
