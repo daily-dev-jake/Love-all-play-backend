@@ -6,6 +6,7 @@ const matchController = {
     try {
       const newPlayers = req.body;
       const players = [];
+      const playersScores = [];
       for (let i = 0; i < newPlayers.length; i++) {
         const player = newPlayers[i];
         try {
@@ -14,6 +15,7 @@ const matchController = {
             email: player.email,
           });
           players.push(result);
+          playersScores.push({ player: result, score: 0 });
         } catch (err) {
           // either violate schema type or player exists
           res.status(500).json({ message: err.message });
@@ -23,7 +25,7 @@ const matchController = {
 
       // TODO: check for 2 players (singles for now) and if they're registered.
       const newMatch = await Match.create(
-        { matchPlayers: players, date: Date.now() }
+        { matchPlayers: players, scores: playersScores, date: Date.now() }
       );
       console.log(newMatch);
       res.status(201).json(newMatch);
