@@ -1,27 +1,36 @@
 const Match = require('../models/matchModel');
 const Player = require('../models/playerModel')
-const playerService = require("../services/playerService")
 const matchController = {
   // Controller to create a new match
   async createMatch(req, res) {
     try {
       const newPlayers = req.body;
       const players = [];
-      newPlayers.forEach(async player => {
-        const result = await Player.create({
-          name: player.name,
-          email: player.email,
-        });
-        if (!result) {
+      for (let i = 0; i < newPlayers.length; i++) {
+        const player = newPlayers[i];
+        try {
+          const result = await Player.create({
+            name: player.name,
+            email: player.email,
+          });
+          console.log('+++');
+          console.log(result);
+          console.log('+++');
+          players.push(result);
+        } catch (err) {
+          // either violate schema type or player exists
           res.status(500).json({ message: err.message });
           return;
         }
-        players.push(result.player);
-      });
+      }
+
+      console.log('-----------------');
+      console.log(players);
+      console.log('-----------------');
 
       // TODO: check for 2 players (singles for now) and if they're registered.
       const newMatch = await Match.create(
-        { matchPlayers: players }, Date.now
+        { matchPlayers: players, date: Date.now }
       );
       console.log(newMatch);
       res.status(201).json(newMatch);
