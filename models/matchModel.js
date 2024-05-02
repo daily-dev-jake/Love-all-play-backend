@@ -5,11 +5,10 @@ const MatchSchema = new Schema({
         type: mongoose.ObjectId,
         ref: 'Player'
       }],
-    // matchPlayers: [{ type: mongoose.ObjectId, ref: 'Player' }],
-    // scores: [{
-    //     player: { type: mongoose.ObjectId, ref: 'Player', default: undefined },
-    //     score: { type: Number, default: 0 }
-    // }],
-    date: { type: Date, default: Date.now }
+    scores: [{
+        player: { type: mongoose.ObjectId, ref: 'Player', default: undefined },
+        score: { type: Number, default: 0 }
+    }],
+    date: { type: Date, default: Date.now() }
 });
 module.exports = mongoose.model('Match', MatchSchema);

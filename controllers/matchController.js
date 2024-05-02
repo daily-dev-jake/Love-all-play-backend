@@ -13,9 +13,6 @@ const matchController = {
             name: player.name,
             email: player.email,
           });
-          console.log('+++');
-          console.log(result);
-          console.log('+++');
           players.push(result);
         } catch (err) {
           // either violate schema type or player exists
@@ -24,13 +21,9 @@ const matchController = {
         }
       }
 
-      console.log('-----------------');
-      console.log(players);
-      console.log('-----------------');
-
       // TODO: check for 2 players (singles for now) and if they're registered.
       const newMatch = await Match.create(
-        { matchPlayers: players, date: Date.now }
+        { matchPlayers: players, date: Date.now() }
       );
       console.log(newMatch);
       res.status(201).json(newMatch);
@@ -54,7 +47,7 @@ const matchController = {
         return res.status(404).json({ message: 'Player not found in the match' });
       }
 
-      playerScore.score++; // Increment player's score
+      playerScore.score++;
       await match.save();
       res.status(200).json(match);
     } catch (err) {
