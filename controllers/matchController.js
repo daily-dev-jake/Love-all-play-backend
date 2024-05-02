@@ -1,25 +1,44 @@
 const Match = require('../models/matchModel');
 const Player = require('../models/playerModel')
+const playerService = require("../services/playerService");
 const matchController = {
   // Controller to create a new match
   async createMatch(req, res) {
     try {
-      const newPlayers = req.body;
+      const matchPlayers = req.body;
+      // if dont't have
       const players = [];
       const playersScores = [];
-      for (let i = 0; i < newPlayers.length; i++) {
-        const player = newPlayers[i];
+      // no. of players guard
+      const numOfPlayers = matchPlayers.length;
+      if (numOfPlayers < 2 || numOfPlayers === 3 || numOfPlayers > 4) {
+        res.status(500).json({ message: "Only accepts singles/doubles match for now." });
+        return;
+      }
+      for (let i = 0; i < numOfPlayers; i++) {
+        const player = matchPlayers[i];
+        // check find player by email
+        let foundUser = {};
         try {
-          const result = await Player.create({
-            name: player.name,
-            email: player.email,
-          });
-          players.push(result);
-          playersScores.push({ player: result, score: 0 });
+          foundUser = await playerService.findUserByEmail(player.email);
+          console.log("finding user now:");
+          console.log(foundUser);
+          if (!foundUser) {
+            try {
+              foundUser = await Player.create({
+                name: player.name,
+                email: player.email,
+              });
+            } catch (err) {
+              // either violate schema type or player exists
+              res.status(404).json({ message: err.message });
+              return;
+            }
+          }
+          players.push(foundUser);
+          playersScores.push({ player: foundUser, score: 0 });
         } catch (err) {
-          // either violate schema type or player exists
-          res.status(500).json({ message: err.message });
-          return;
+          res.status(404).json({ message: err.message });
         }
       }
 
