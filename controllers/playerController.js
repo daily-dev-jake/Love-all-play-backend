@@ -1,131 +1,85 @@
-const playerService = require("../services/playerService");
-// const bcrypt = require("bcrypt");
-// const googleClient = new OAuth2Client({
-//   clientId: `${process.env.GOOGLE_CLIENT_ID}`,
-// });
+const Player = require('../models/playerModel');
 
-exports.createPlayer = async (request, response) => {
-  // extract from request body
-  console.log(request.body);
-  const { name, email, avatar } = request.body;
-
-  // Name and Email guard
-  if (!name || !email)
-    return res
-      .status(400)
-      .send({ message: "Email or name is required." });
-
-  // Checks for existing user
-  // let existingUser; 
-  // try {
-  //   existingUser = await Player.findOne({ email: email });
-  // } catch (err) {
-  //   const error = new HttpError(
-  //     "signing up failed, please try again later",
-  //     500
-  //   );
-  //   return next(error);
-  // }
-
-  // if (!existingUser) {
-  //   const error = new HttpError(
-  //     `User ${existingUser.name} exists already, please login instead.`,
-  //     422
-  //   );
-  //   return next(error);
-  // }
-
-  playerService.createUser(request, response);
-};
-
-
-// exports.authenticateUser = async (req, res) => {
-//   const { token } = req.body;
-
-//   const ticket = await googleClient.verifyIdToken({
-//     idToken: token,
-//     audient: `${process.env.GOOGLE_CLIENT_ID}`,
-//   });
-
-//   const payload = ticket.getPayload();
-
-//   let user = await playerService.findUserByEmail({ email: payload.email });
-//   if (!user) {
-//     await playerService.createUser(payload.name, payload.email, avatar = payload.picture);
-//   }
-
-//   res.json({ user, token });
-// };
-
-exports.getUserById = async (req, res) => {
+// Create a new player
+exports.createPlayer = async (req, res) => {
   try {
-    const id = req.query.id;
-    const user = await playerService.getUserById(id);
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(404).json({ message: err.message });
-  }
-};
-exports.getUserByEmail = async (req, res) => {
-  try {
-    const email = req.body.email;
-    const user = await playerService.findUserByEmail(email);
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(404).json({ message: err.message });
+    const { name, email } = req.body;
+    const player = new Player({ name, email });
+    await player.save();
+    res.status(201).json(player);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
-exports.updateUser = async (req, res) => {
+// Get all players
+exports.getAllPlayers = async (req, res) => {
   try {
-    // console.log(req.params.id);
-    const user = await playerService.updateUser(req.params.id, req.body);
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const players = await Player.find().sort({ createdAt: -1 });
+    res.json(players);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-exports.deleteUser = async (req, res) => {
+// Get a single player by ID
+exports.getPlayerById = async (req, res) => {
   try {
-    const user = await playerService.deleteUser(req.params.id);
-    if (!user) {
-      res.status(404).json({ message: "User not found." });
-    }
-    else {
-      res.status(200).json({ success: `User ${user.name} deleted!` });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-    return
-  };
-}
-// exports.signIn = (username, password) => {
-//   User.findOne({
-//     username: username,
-//   }).exec((err, user) => {
-//     if (err) {
-//       res.status(500).send({ message: err });
-//       return;
-//     }
+    const player = await Player.findById(req.params.id);
+    if (!player) return res.status(404).json({ message: 'Player not found' });
+    res.json(player);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     if (!user) {
-//       return res.status(404).send({ message: "User Not found." });
-//     }
+// ✅ Get player by name
+exports.getPlayerByName = async (req, res) => {
+  try {
+    const name = req.params.name;
+    const player = await Player.findOne({ name });
+    if (!player) return res.status(404).json({ message: 'Player not found' });
+    res.json(player);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     var passwordIsValid = bcrypt.compareSync(password, user.password);
+// ✅ Get player by email
+exports.getPlayerByEmail = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const player = await Player.findOne({ email });
+    if (!player) return res.status(404).json({ message: 'Player not found' });
+    res.json(player);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//     if (!passwordIsValid) {
-//       return res.status(401).send({
-//         accessToken: null,
-//         message: "Invalid Password!",
-//       });
-//     }
+// Update a player by ID
+exports.updatePlayer = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const player = await Player.findByIdAndUpdate(
+      req.params.id,
+      { name, email },
+      { new: true, runValidators: true }
+    );
+    if (!player) return res.status(404).json({ message: 'Player not found' });
+    res.json(player);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
-//     res.status(200).send({
-//       id: user._id,
-//       username: user.username,
-//       email: user.email,
-//     });
-//   });
-// };
+// Delete a player by ID
+exports.deletePlayer = async (req, res) => {
+  try {
+    const player = await Player.findByIdAndDelete(req.params.id);
+    if (!player) return res.status(404).json({ message: 'Player not found' });
+    res.json({ message: 'Player deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -8,16 +8,11 @@ const PlayerSchema = new Schema({
     required: true,
     minlength: 3
   },
-  avatar: {
-    type: String,
-    default: "",
-  },
   email: {
     type: String,
     default: "",
-    required: true,
     unique: true,
   },
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("Player", PlayerSchema);
