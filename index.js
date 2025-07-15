@@ -13,7 +13,10 @@ mongoose.connect(process.env.MDB_URL, { useNewUrlParser: true });
 
 // app.use(cors()); // Allows All origins
 // Allows only our dev localhost (MORE CONTROL)
-const corsAllowedClient = `http://localhost:${process.env.CLIENT_PORT}`;
+const corsAllowedClient = process.env.NODE_ENV === 'production'
+  ? [`${process.env.FRONTEND_ORIGIN}`]
+  : [`http://localhost:${process.env.CLIENT_PORT}`];
+
 app.use(cors({
   origin: corsAllowedClient,
   methods: ['GET', 'POST', 'DELETE', 'PUT'],
