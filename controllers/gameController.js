@@ -4,8 +4,7 @@ const Match = require('../models/matchModel');
 // Add a game to a match and update match state
 exports.addGameToMatch = async (req, res) => {
   try {
-    const matchId = req.params.matchId;
-    const { winner, player1Score, player2Score } = req.body;
+    const { matchId, winner, player1Score, player2Score } = req.body;
 
     const match = await Match.findById(matchId);
     if (!match) return res.status(404).json({ message: 'Match not found' });

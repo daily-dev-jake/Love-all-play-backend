@@ -37,6 +37,7 @@ exports.getPlayerById = async (req, res) => {
 exports.getPlayerByName = async (req, res) => {
   try {
     const name = req.params.name;
+    console.log(name + " logged in.");
     const player = await Player.findOne({ name });
     if (!player) return res.status(404).json({ message: 'Player not found' });
     res.json(player);

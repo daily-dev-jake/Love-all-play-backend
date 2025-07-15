@@ -1,7 +1,8 @@
 # Love-all-play-backend
 
 ## Description
-Backend for **Love-all-play**
+Backend for **[Love-all-play](https://love-all-play.onrender.com)**
+For frontend: **[https://github.com/daily-dev-jake/Love-All-Play](https://github.com/daily-dev-jake/Love-All-Play)**
 ---
 Problem statement: Badminton Player wants to track score because might not be able to remember their scores.
 Solution: A score tracking app is needed
@@ -16,7 +17,7 @@ User requests: Track within the least amount of interactions
 5. Eventually, after the best of 3 **Games**, the final **Match** winner will be victorious. Both **Games** and **Match points** will be reset.
 6. **Users** will be able to see their past **scores** when needed.
 
-## Scoring system for Badminton ((Taken from badmintonnl)[https://www.badmintonnl.ca/resources/simplified-rules/])
+## Scoring system for Badminton ([Rules from badmintonnl.ca](https://www.badmintonnl.ca/resources/simplified-rules/))
 
 - A match consists of the best of 3 games of 21 points.
 - Every time there is a serve – there is a point scored.
